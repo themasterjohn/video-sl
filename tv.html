@@ -13,41 +13,30 @@
 <body>
 <video id="player" playsinline muted autoplay></video>
 <script>
+var playlist = [
+  "https://files.catbox.moe/s04t8v.mp4",
+  "https://files.catbox.moe/imxgkr.mp4",
+  "https://files.catbox.moe/3jxekf.mp4"
+];
+var current = 0;
 var player = document.getElementById('player');
-var playlist = [];
-var currentIndex = 0;
 
-function playNext() {
-  if (playlist.length === 0) return;
-  currentIndex = (currentIndex + 1) % playlist.length;
-  player.src = playlist[currentIndex];
+function play(idx) {
+  current = idx % playlist.length;
+  player.src = playlist[current];
   player.load();
   player.play();
 }
 
-player.addEventListener('ended', playNext);
-
-player.addEventListener('error', function() {
-  playNext();
+player.addEventListener('ended', function() {
+  play(current + 1);
 });
 
-var xhr = new XMLHttpRequest();
-xhr.open('GET', 'playlist.json?t=' + Date.now(), true);
-xhr.onload = function() {
-  if (xhr.status === 200) {
-    try {
-      var state = JSON.parse(xhr.responseText);
-      playlist = state.playlist || [];
-      currentIndex = state.current_index || 0;
-      if (playlist.length > 0) {
-        player.src = playlist[currentIndex];
-        player.load();
-        player.play();
-      }
-    } catch(e) {}
-  }
-};
-xhr.send();
+player.addEventListener('error', function() {
+  play(current + 1);
+});
+
+play(0);
 </script>
 </body>
 </html>
