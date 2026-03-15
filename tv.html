@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TV</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+  video { width: 100%; height: 100%; object-fit: contain; display: block; }
+</style>
+</head>
+<body>
+<video id="player" playsinline muted autoplay loop></video>
+<script>
+var STATE_URL = 'playlist.json';
+var player = document.getElementById('player');
+var lastSrc = '';
+
+function fetchState() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', STATE_URL + '?t=' + Date.now(), true);
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      try {
+        var state = JSON.parse(xhr.responseText);
+        applyState(state);
+      } catch(e) {}
+    }
+    scheduleNext();
+  };
+  xhr.onerror = function() { scheduleNext(); };
+  xhr.send();
+}
+
+function scheduleNext() {
+  window.setTimeout(fetchState, 3000);
+}
+
+function applyState(state) {
+  if (!state || !state.playlist || state.playlist.length === 0) return;
+  var idx = state.current_index % state.playlist.length;
+  var url = state.playlist[idx];
+  if (url !== lastSrc) {
+    lastSrc = url;
+    player.src = url;
+    player.load();
+    player.play();
+  }
+  if (state.paused) {
+    player.pause();
+  } else if (player.paused) {
+    player.play();
+  }
+}
+
+player.addEventListener('ended', function() {
+  player.play();
+});
+
+fetchState();
+</script>
+</body>
+</html>
