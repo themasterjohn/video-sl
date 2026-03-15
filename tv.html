@@ -11,54 +11,43 @@
 </style>
 </head>
 <body>
-<video id="player" playsinline muted autoplay loop></video>
+<video id="player" playsinline muted autoplay></video>
 <script>
-var STATE_URL = 'playlist.json';
 var player = document.getElementById('player');
-var lastSrc = '';
+var playlist = [];
+var currentIndex = 0;
 
-function fetchState() {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', STATE_URL + '?t=' + Date.now(), true);
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      try {
-        var state = JSON.parse(xhr.responseText);
-        applyState(state);
-      } catch(e) {}
-    }
-    scheduleNext();
-  };
-  xhr.onerror = function() { scheduleNext(); };
-  xhr.send();
-}
-
-function scheduleNext() {
-  window.setTimeout(fetchState, 3000);
-}
-
-function applyState(state) {
-  if (!state || !state.playlist || state.playlist.length === 0) return;
-  var idx = state.current_index % state.playlist.length;
-  var url = state.playlist[idx];
-  if (url !== lastSrc) {
-    lastSrc = url;
-    player.src = url;
-    player.load();
-    player.play();
-  }
-  if (state.paused) {
-    player.pause();
-  } else if (player.paused) {
-    player.play();
-  }
-}
-
-player.addEventListener('ended', function() {
+function playNext() {
+  if (playlist.length === 0) return;
+  currentIndex = (currentIndex + 1) % playlist.length;
+  player.src = playlist[currentIndex];
+  player.load();
   player.play();
+}
+
+player.addEventListener('ended', playNext);
+
+player.addEventListener('error', function() {
+  playNext();
 });
 
-fetchState();
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'playlist.json?t=' + Date.now(), true);
+xhr.onload = function() {
+  if (xhr.status === 200) {
+    try {
+      var state = JSON.parse(xhr.responseText);
+      playlist = state.playlist || [];
+      currentIndex = state.current_index || 0;
+      if (playlist.length > 0) {
+        player.src = playlist[currentIndex];
+        player.load();
+        player.play();
+      }
+    } catch(e) {}
+  }
+};
+xhr.send();
 </script>
 </body>
 </html>
