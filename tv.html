@@ -8,11 +8,31 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
   video { width: 100%; height: 100%; object-fit: contain; display: block; }
+  #btn {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #000;
+  }
+  #btn div {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: #fff;
+  }
+  #btn.hidden { display: none; }
 </style>
 </head>
 <body>
-<video id="player" playsinline muted autoplay></video>
-<video id="preloader" playsinline muted style="display:none"></video>
+<video id="player" playsinline muted></video>
+<div id="btn" onclick="start()"><div>&#9654;</div></div>
 <script>
 var playlist = [
   "https://files.catbox.moe/s04t8v.mp4",
@@ -20,19 +40,13 @@ var playlist = [
   "https://files.catbox.moe/3jxekf.mp4",
   "https://files.catbox.moe/qyhh0n.mp4",
   "https://files.catbox.moe/2kb72b.mp4",
-  "https://files.catbox.moe/bkghxn.mp4",
- "https://files.catbox.moe/sbjhvy.mp4,
-"https://files.catbox.moe/lzhij8.mp4,
-"https://files.catbox.moe/ktvyhn.mp4,
-"https://files.catbox.moe/iiqd1a.mp4,
-"https://files.catbox.moe/jlk2to.mp4,
-"https://files.catbox.moe/i4uynw.mp4,
-"https://files.catbox.moe/l832wj.mp4,
-"https://files.catbox.moe/ixh1gh.mp4
+  "https://files.catbox.moe/bkghxn.mp4"
 ];
 var current = 0;
 var player = document.getElementById('player');
-var preloader = document.getElementById('preloader');
+var btn = document.getElementById('btn');
+var preloader = document.createElement('video');
+preloader.muted = true;
 
 function preloadNext(idx) {
   var next = (idx + 1) % playlist.length;
@@ -56,7 +70,10 @@ player.addEventListener('error', function() {
   play(current + 1);
 });
 
-play(0);
+function start() {
+  btn.classList.add('hidden');
+  play(0);
+}
 </script>
 </body>
 </html>
