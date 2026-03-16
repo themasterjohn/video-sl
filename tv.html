@@ -7,92 +7,111 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
-  video { width: 100%; height: 100%; object-fit: contain; display: block; }
+  video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; }
+  #back-btn {
+    position: absolute;
+    top: 10px; left: 10px;
+    z-index: 20;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    font-size: 11px;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    letter-spacing: 0.1em;
+  }
+  #back-btn:hover { background: rgba(255,255,255,0.2); }
+  #back-btn.hidden { display: none; }
   #overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.92);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
-    overflow-y: auto;
-    padding: 20px;
+    overflow-y: scroll;
+    padding: 20px 20px 40px;
+    z-index: 10;
   }
   #overlay.hidden { display: none; }
-  #overlay h2 { color: #fff; font-size: 16px; margin-bottom: 8px; font-weight: 400; letter-spacing: 0.1em; }
+  #overlay h2 { color: #fff; font-size: 15px; margin-bottom: 16px; margin-top: 10px; font-weight: 400; letter-spacing: 0.15em; flex-shrink: 0; }
   .vbtn {
-    width: 240px;
+    width: 260px;
+    flex-shrink: 0;
     padding: 10px 16px;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.25);
     color: #fff;
     font-size: 13px;
     cursor: pointer;
     border-radius: 3px;
     text-align: left;
-    transition: background 0.15s;
+    margin-bottom: 6px;
   }
-  .vbtn:hover { background: rgba(255,255,255,0.25); }
-  .vbtn span { color: rgba(255,255,255,0.4); font-size: 11px; margin-right: 8px; }
+  .vbtn:hover { background: rgba(255,255,255,0.2); }
+  .vbtn.active { border-color: #fff; background: rgba(255,255,255,0.2); }
+  .vbtn span { color: rgba(255,255,255,0.35); font-size: 11px; margin-right: 8px; }
 </style>
 </head>
 <body>
 <video id="player" playsinline muted></video>
+<button id="back-btn" class="hidden" onclick="showList()">&#9776; LIST</button>
 <div id="overlay">
   <h2>CHOOSE WHERE TO START</h2>
 </div>
 <script>
 var playlist = [
-  { title: "Zoey (blackplaything)", url: "https://files.catbox.moe/s04t8v.mp4" },
-{ title: "Cox presentation", url: "https://files.catbox.moe/imxgkr.mp4" },
-{ title: "Ami (xxheramixx)", url: "https://files.catbox.moe/3jxekf.mp4" },
-{ title: "Tani (mstani)", url: "https://files.catbox.moe/2kb72b.mp4" },
-{ title: "Nessa and Jeantaz", url: "https://files.catbox.moe/bkghxn.mp4" },
-{ title: "Emma (emmauk22)", url: "https://files.catbox.moe/sbjhvy.mp4" },
-{ title: "Roxy (Roxy00Redgrave)", url: "https://files.catbox.moe/lzhij8.mp4" },
-{ title: "Sacha Suχχχ (sacha.starfall)", url: "https://files.catbox.moe/ktvyhn.mp4" },
-{ title: "Jess (jess407)", url: "https://files.catbox.moe/iiqd1a.mp4" },
-{ title: "FlowerCheese", url: "https://files.catbox.moe/jlk2to.mp4" },
-{ title: "Ayla Erin (lunapeach)", url: "https://files.catbox.moe/i4uynw.mp4" },
-{ title: "Magdalena (clairea21)", url: "https://files.catbox.moe/l832wj.mp4" },
-{ title: "Black Bess (maidhelplesmaid)", url: "https://files.catbox.moe/ixh1gh.mp4" },
-{ title: "Amber S Spears (lidia.mertel)", url: "https://files.catbox.moe/jeriih.mp4" },
-{ title: "Little Slut", url: "https://files.catbox.moe/zbeaxg.mp4" },
-{ title: "Kim (blenderartist)", url: "https://files.catbox.moe/pekp4v.mp4" },
-{ title: "April (aprilmarie6)", url: "https://files.catbox.moe/z2yepp.mp4" },
-{ title: "AEdi de De Valdés (edi.lunasea)", url: "https://files.catbox.moe/jtg8jx.mp4" },
-{ title: "Mollylin", url: "https://files.catbox.moe/rt6aco.mp4" },
-{ title: "Scar (mrsbuttmyworth)", url: "https://files.catbox.moe/hvw1xb.mp4" },
-{ title: "Good-slut", url: "https://files.catbox.moe/1mtq32.mp4" },
-{ title: "Tantrica Banana", url: "https://files.catbox.moe/8b6u6q.mp4" },
-{ title: "sunnysin Clary", url: "https://files.catbox.moe/pdtods.mp4" },
-{ title: "Erika", url: "https://files.catbox.moe/ippm20.mp4" },
-{ title: "rachelvanlish", url: "https://files.catbox.moe/a9g73z.mp4" },
-{ title: "Apolline (lydiaflanaria)", url: "https://files.catbox.moe/01i8kt.mp4" },
-{ title: "Black Cunt", url: "https://files.catbox.moe/3x4g3r.mp4" },
-{ title: "KeeshaStone", url: "https://files.catbox.moe/pniw1x.mp4" },
-{ title: "Slut", url: "https://files.catbox.moe/wl1q09.mp4" },
-{ title: "Justine.Qork", url: "https://files.catbox.moe/lp0452.mp4" },
-{ title: "María 35 (inicioact)", url: "https://files.catbox.moe/05rl5x.mp4" },
-{ title: "vvritavv", url: "https://files.catbox.moe/jq0b9i.mp4" },
-{ title: "vvritavv -2", url: "https://files.catbox.moe/occlpu.mp4" },
-{ title: "JoanneTellin", url: "https://files.catbox.moe/vxig75.mp4" },
-{ title: "pet tamira (tamira.anatine)", url: "https://files.catbox.moe/ejlsj5.mp4" },
-{ title: "A2203 (angeline1995)", url: "https://files.catbox.moe/q92kt0.mp4" },
-{ title: "A2203 (angeline1995)-2", url: "https://files.catbox.moe/q92kt0.mp4" },
-{ title: "Vanesa Linda (vanesamx)", url: "https://files.catbox.moe/yo4hvz.mp4" },
-{ title: "Vanesa Linda (vanesamx) - 2", url: "https://files.catbox.moe/5owbaj.mp4" },
-{ title: "Kuty Riuka (tskrob.ragu)", url: "https://files.catbox.moe/bxqtyd.mp4" },
-{ title: "Nyssa (nyssa.demure)", url: "https://files.catbox.moe/ix0t8b.mp4" },
-{ title: "Nancy (fetishnancy.fall)", url: "https://files.catbox.moe/jjelc6.mp4" }
+  { title: "angeline1995 - A2203", url: "https://files.catbox.moe/q92kt0.mp4" },
+  { title: "angeline1995 - A2203 -2", url: "https://files.catbox.moe/q92kt0.mp4" },
+  { title: "aprilmarie6 - April", url: "https://files.catbox.moe/z2yepp.mp4" },
+  { title: "blackplaything - Zoey", url: "https://files.catbox.moe/s04t8v.mp4" },
+  { title: "blenderartist - Kim", url: "https://files.catbox.moe/pekp4v.mp4" },
+  { title: "Black Cunt", url: "https://files.catbox.moe/3x4g3r.mp4" },
+  { title: "clairea21 - Magdalena", url: "https://files.catbox.moe/l832wj.mp4" },
+  { title: "Cox presentation", url: "https://files.catbox.moe/imxgkr.mp4" },
+  { title: "edi.lunasea - AEdi de De Valdés", url: "https://files.catbox.moe/jtg8jx.mp4" },
+  { title: "emmauk22 - Emma", url: "https://files.catbox.moe/sbjhvy.mp4" },
+  { title: "Erika", url: "https://files.catbox.moe/ippm20.mp4" },
+  { title: "fetishnancy.fall - Nancy", url: "https://files.catbox.moe/jjelc6.mp4" },
+  { title: "FlowerCheese", url: "https://files.catbox.moe/jlk2to.mp4" },
+  { title: "Good-slut", url: "https://files.catbox.moe/1mtq32.mp4" },
+  { title: "inicioact - María 35", url: "https://files.catbox.moe/05rl5x.mp4" },
+  { title: "jess407 - Jess", url: "https://files.catbox.moe/iiqd1a.mp4" },
+  { title: "JoanneTellin", url: "https://files.catbox.moe/vxig75.mp4" },
+  { title: "Justine.Qork", url: "https://files.catbox.moe/lp0452.mp4" },
+  { title: "KeeshaStone", url: "https://files.catbox.moe/pniw1x.mp4" },
+  { title: "lidia.mertel - Amber S Spears", url: "https://files.catbox.moe/jeriih.mp4" },
+  { title: "Little Slut", url: "https://files.catbox.moe/zbeaxg.mp4" },
+  { title: "lunapeach - Ayla Erin", url: "https://files.catbox.moe/i4uynw.mp4" },
+  { title: "lydiaflanaria - Apolline", url: "https://files.catbox.moe/01i8kt.mp4" },
+  { title: "maidhelplesmaid - Black Bess", url: "https://files.catbox.moe/ixh1gh.mp4" },
+  { title: "Mollylin", url: "https://files.catbox.moe/rt6aco.mp4" },
+  { title: "mrsbuttmyworth - Scar", url: "https://files.catbox.moe/hvw1xb.mp4" },
+  { title: "mstani - Tani", url: "https://files.catbox.moe/2kb72b.mp4" },
+  { title: "Nessa and Jeantaz", url: "https://files.catbox.moe/bkghxn.mp4" },
+  { title: "nyssa.demure - Nyssa", url: "https://files.catbox.moe/ix0t8b.mp4" },
+  { title: "tamira.anatine - pet tamira", url: "https://files.catbox.moe/ejlsj5.mp4" },
+  { title: "rachelvanlish", url: "https://files.catbox.moe/a9g73z.mp4" },
+  { title: "Roxy00Redgrave - Roxy", url: "https://files.catbox.moe/lzhij8.mp4" },
+  { title: "sacha.starfall - Sacha Suχχχ", url: "https://files.catbox.moe/ktvyhn.mp4" },
+  { title: "Slut", url: "https://files.catbox.moe/wl1q09.mp4" },
+  { title: "sunnysin Clary", url: "https://files.catbox.moe/pdtods.mp4" },
+  { title: "Tantrica Banana", url: "https://files.catbox.moe/8b6u6q.mp4" },
+  { title: "tskrob.ragu - Kuty Riuka", url: "https://files.catbox.moe/bxqtyd.mp4" },
+  { title: "vanesamx - Vanesa Linda", url: "https://files.catbox.moe/yo4hvz.mp4" },
+  { title: "vanesamx - Vanesa Linda - 2", url: "https://files.catbox.moe/5owbaj.mp4" },
+  { title: "vvritavv", url: "https://files.catbox.moe/jq0b9i.mp4" },
+  { title: "vvritavv -2", url: "https://files.catbox.moe/occlpu.mp4" },
+  { title: "xxheramixx - Ami", url: "https://files.catbox.moe/3jxekf.mp4" }
 ];
 
 var current = 0;
 var player = document.getElementById('player');
 var overlay = document.getElementById('overlay');
+var backBtn = document.getElementById('back-btn');
 var preloader = document.createElement('video');
+var buttons = [];
 preloader.muted = true;
 
 playlist.forEach(function(v, i) {
@@ -101,6 +120,7 @@ playlist.forEach(function(v, i) {
   btn.innerHTML = '<span>' + (i+1) + '</span>' + v.title;
   btn.onclick = function() { start(i); };
   overlay.appendChild(btn);
+  buttons.push(btn);
 });
 
 function preloadNext(idx) {
@@ -115,6 +135,9 @@ function play(idx) {
   player.load();
   player.play();
   preloadNext(current);
+  buttons.forEach(function(b, i) {
+    b.classList.toggle('active', i === current);
+  });
 }
 
 player.addEventListener('ended', function() {
@@ -127,7 +150,14 @@ player.addEventListener('error', function() {
 
 function start(idx) {
   overlay.classList.add('hidden');
+  backBtn.classList.remove('hidden');
   play(idx);
+}
+
+function showList() {
+  overlay.classList.remove('hidden');
+  var activeBtn = buttons[current];
+  if (activeBtn) activeBtn.scrollIntoView({ block: 'center' });
 }
 </script>
 </body>
