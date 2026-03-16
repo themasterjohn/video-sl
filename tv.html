@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 12px;
     overflow-y: auto;
     padding: 20px;
@@ -41,18 +41,18 @@
 <body>
 <video id="player" playsinline muted></video>
 <div id="overlay">
-  <h2>SCEGLI DA DOVE INIZIARE</h2>
+  <h2>CHOOSE WHERE TO START</h2>
 </div>
 <script>
 var playlist = [
-  { title: "ⵒσєყ (blackplaything)", url: "https://files.catbox.moe/s04t8v.mp4" },
+  { title: "Zoey (blackplaything)", url: "https://files.catbox.moe/s04t8v.mp4" },
 { title: "Cox presentation", url: "https://files.catbox.moe/imxgkr.mp4" },
 { title: "Ami (xxheramixx)", url: "https://files.catbox.moe/3jxekf.mp4" },
 { title: "Tani (mstani)", url: "https://files.catbox.moe/2kb72b.mp4" },
 { title: "Nessa and Jeantaz", url: "https://files.catbox.moe/bkghxn.mp4" },
 { title: "Emma (emmauk22)", url: "https://files.catbox.moe/sbjhvy.mp4" },
 { title: "Roxy (Roxy00Redgrave)", url: "https://files.catbox.moe/lzhij8.mp4" },
-{ title: "ღ Sacha Suχχχ ღ (sacha.starfall)", url: "https://files.catbox.moe/ktvyhn.mp4" },
+{ title: "Sacha Suχχχ (sacha.starfall)", url: "https://files.catbox.moe/ktvyhn.mp4" },
 { title: "Jess (jess407)", url: "https://files.catbox.moe/iiqd1a.mp4" },
 { title: "FlowerCheese", url: "https://files.catbox.moe/jlk2to.mp4" },
 { title: "Ayla Erin (lunapeach)", url: "https://files.catbox.moe/i4uynw.mp4" },
@@ -64,7 +64,7 @@ var playlist = [
 { title: "April (aprilmarie6)", url: "https://files.catbox.moe/z2yepp.mp4" },
 { title: "AEdi de De Valdés (edi.lunasea)", url: "https://files.catbox.moe/jtg8jx.mp4" },
 { title: "Mollylin", url: "https://files.catbox.moe/rt6aco.mp4" },
-{ title: "ŞςคЯ (mrsbuttmyworth)", url: "https://files.catbox.moe/hvw1xb.mp4" },
+{ title: "Scar (mrsbuttmyworth)", url: "https://files.catbox.moe/hvw1xb.mp4" },
 { title: "Good-slut", url: "https://files.catbox.moe/1mtq32.mp4" },
 { title: "Tantrica Banana", url: "https://files.catbox.moe/8b6u6q.mp4" },
 { title: "sunnysin Clary", url: "https://files.catbox.moe/pdtods.mp4" },
@@ -79,14 +79,14 @@ var playlist = [
 { title: "vvritavv", url: "https://files.catbox.moe/jq0b9i.mp4" },
 { title: "vvritavv -2", url: "https://files.catbox.moe/occlpu.mp4" },
 { title: "JoanneTellin", url: "https://files.catbox.moe/vxig75.mp4" },
-{ title: "ღ pet tamira ღ (tamira.anatine)", url: "https://files.catbox.moe/ejlsj5.mp4" },
+{ title: "pet tamira (tamira.anatine)", url: "https://files.catbox.moe/ejlsj5.mp4" },
 { title: "A2203 (angeline1995)", url: "https://files.catbox.moe/q92kt0.mp4" },
 { title: "A2203 (angeline1995)-2", url: "https://files.catbox.moe/q92kt0.mp4" },
 { title: "Vanesa Linda (vanesamx)", url: "https://files.catbox.moe/yo4hvz.mp4" },
 { title: "Vanesa Linda (vanesamx) - 2", url: "https://files.catbox.moe/5owbaj.mp4" },
 { title: "Kuty Riuka (tskrob.ragu)", url: "https://files.catbox.moe/bxqtyd.mp4" },
 { title: "Nyssa (nyssa.demure)", url: "https://files.catbox.moe/ix0t8b.mp4" },
-{ title: "ღ Nancy ღ (fetishnancy.fall)", url: "https://files.catbox.moe/jjelc6.mp4" }
+{ title: "Nancy (fetishnancy.fall)", url: "https://files.catbox.moe/jjelc6.mp4" }
 ];
 
 var current = 0;
